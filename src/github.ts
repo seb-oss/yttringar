@@ -163,7 +163,7 @@ export function loadJsonFile<T>(path: string, html = false) {
 }
 
 export function loadIssuesByTerm(term: string) {
-  const q = `"${term}" type:issue in:title repo:${owner}/${repo}`
+  const q = `"Page id: ${term}" type:issue is:open in:body repo:${owner}/${repo}`
   const request = githubRequest(
     `search/issues?q=${encodeURIComponent(q)}&sort=created&order=asc`
   )

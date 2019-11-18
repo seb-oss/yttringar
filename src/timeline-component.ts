@@ -1,10 +1,10 @@
 import { User, Issue, IssueComment } from './github'
-import { CommentComponent } from './comment-component'
+import { IssueComponent } from './issue-component'
 import { scheduleMeasure } from './measure'
 
 export class TimelineComponent {
   public readonly element: HTMLElement
-  private readonly timeline: CommentComponent[] = []
+  private readonly timeline: IssueComponent[] = []
   private readonly countAnchor: HTMLAnchorElement
   private readonly marker: Node
   private count: number = 0
@@ -44,76 +44,80 @@ export class TimelineComponent {
 
       this.count = issues.length
       // this.countAnchor.href = issue.html_url
+      const components = issues.map(e => new IssueComponent(e, null))
+      this.timeline.concat(components)
+      components.map(e => this.element.insertBefore(e.element, this.marker))
+      console.log(this.timeline)
       this.renderCount()
     } else {
       this.countAnchor.removeAttribute('href')
     }
   }
 
-  public insertComment(comment: IssueComment, incrementCount: boolean) {
-    const component = new CommentComponent(
-      comment,
-      this.user ? this.user.login : null
-    )
+  // public insertComment(comment: IssueComment, incrementCount: boolean) {
+  //   const component = new CommentComponent(
+  //     comment,
+  //     this.user ? this.user.login : null
+  //   )
 
-    const index = this.timeline.findIndex(x => x.comment.id >= comment.id)
-    if (index === -1) {
-      this.timeline.push(component)
-      this.element.insertBefore(component.element, this.marker)
-    } else {
-      const next = this.timeline[index]
-      const remove = next.comment.id === comment.id
-      this.element.insertBefore(component.element, next.element)
-      this.timeline.splice(index, remove ? 1 : 0, component)
-      if (remove) {
-        next.element.remove()
-      }
-    }
+  //   const index = this.timeline.findIndex(x => x.comment.id >= comment.id)
+  //   if (index === -1) {
+  //     this.timeline.push(component)
+  //     this.element.insertBefore(component.element, this.marker)
+  //   } else {
+  //     const next = this.timeline[index]
+  //     const remove = next.comment.id === comment.id
+  //     this.element.insertBefore(component.element, next.element)
+  //     this.timeline.splice(index, remove ? 1 : 0, component)
+  //     if (remove) {
+  //       next.element.remove()
+  //     }
+  //   }
 
-    if (incrementCount) {
-      this.count++
-      this.renderCount()
-    }
+  //   if (incrementCount) {
+  //     this.count++
+  //     this.renderCount()
+  //   }
 
-    scheduleMeasure()
-  }
+  //   scheduleMeasure()
+  // }
 
-  public insertPageLoader(
-    insertAfter: IssueComment,
-    count: number,
-    callback: () => void
-  ) {
-    const { element: insertAfterElement } = this.timeline.find(
-      x => x.comment.id >= insertAfter.id
-    )!
-    insertAfterElement.insertAdjacentHTML(
-      'afterend',
-      `
-      <div class="page-loader">
-        <div class="zigzag"></div>
-        <button type="button" class="btn btn-outline btn-large">
-          ${count} hidden items<br/>
-          <span>Load more...</span>
-        </button>
-      </div>
-    `
-    )
-    const element = insertAfterElement.nextElementSibling!
-    const button = element.lastElementChild! as HTMLButtonElement
-    const statusSpan = button.lastElementChild!
-    button.onclick = callback
+  // public insertPageLoader(
+  //   insertAfter: IssueComment,
+  //   count: number,
+  //   callback: () => void
+  // ) {
+  //   const { element: insertAfterElement } = this.timeline.find(
+  //     x => x.comment.id >= insertAfter.id
+  //   )!
+  //   insertAfterElement.insertAdjacentHTML(
+  //     'afterend',
+  //     `
+  //     <div class="page-loader">
+  //       <div class="zigzag"></div>
+  //       <button type="button" class="btn btn-outline btn-large">
+  //         ${count} hidden items<br/>
+  //         <span>Load more...</span>
+  //       </button>
+  //     </div>
+  //   `
+  //   )
+  //   const element = insertAfterElement.nextElementSibling!
+  //   const button = element.lastElementChild! as HTMLButtonElement
+  //   const statusSpan = button.lastElementChild!
+  //   button.onclick = callback
 
-    return {
-      setBusy() {
-        statusSpan.textContent = 'Loading...'
-        button.disabled = true
-      },
-      remove() {
-        button.onclick = null
-        element.remove()
-      }
-    }
-  }
+  //   return {
+  //     setBusy() {
+  //       statusSpan.textContent = 'Loading...'
+  //       button.disabled = true
+  //     },
+  //     remove() {
+  //       button.onclick = null
+  //       element.remove()
+  //     }
+  //   }
+  // }
 
   private renderCount() {
     this.countAnchor.textContent = `${this.count} Issue${
