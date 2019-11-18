@@ -1,6 +1,5 @@
-import { User, Issue, IssueComment } from './github'
+import { User, Issue, getNameFromUserLogin } from './github'
 import { IssueComponent } from './issue-component'
-import { scheduleMeasure } from './measure'
 
 export class TimelineComponent {
   public readonly element: HTMLElement
@@ -28,26 +27,30 @@ export class TimelineComponent {
     this.renderCount()
   }
 
-  public setUser(user: User | null) {
-    this.user = user
-    const login = user ? user.login : null
-    for (let i = 0; i < this.timeline.length; i++) {
-      this.timeline[i].setCurrentUser(login)
-    }
-    scheduleMeasure()
-  }
+  // public setUser(user: User | null) {
+  //   this.user = user
+  //   const login = user ? user.login : null
+  //   for (let i = 0; i < this.timeline.length; i++) {
+  //     this.timeline[i].setCurrentUser(login)
+  //   }
+  //   scheduleMeasure()
+  // }
 
-  public setIssues(issues: Issue[] | null) {
+  public async setIssues(issues: Issue[] | null) {
     this.issues = issues
     if (issues) {
-      console.log('hejs')
-
       this.count = issues.length
       // this.countAnchor.href = issue.html_url
-      const components = issues.map(e => new IssueComponent(e, null))
+
+      const components = await Promise.all(
+        issues.map(async issue => {
+          const name = await getNameFromUserLogin(issue.user.login)
+
+          return new IssueComponent(issue, name)
+        })
+      )
       this.timeline.concat(components)
       components.map(e => this.element.insertBefore(e.element, this.marker))
-      console.log(this.timeline)
       this.renderCount()
     } else {
       this.countAnchor.removeAttribute('href')
