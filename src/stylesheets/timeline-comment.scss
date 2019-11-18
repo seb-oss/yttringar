@@ -84,7 +84,7 @@
     display: flex;
     border-top: $border;
 
-    &[reaction-count="0"] {
+    &[reaction-count='0'] {
       height: 0;
       overflow: hidden;
       opacity: 0;
@@ -147,4 +147,20 @@
       display: inline-block;
     }
   }
+}
+
+// Modified rules
+.issue-list-item {
+  border: 1px;
+  border-style: hidden solid solid solid;
+  margin: 0;
+  padding: 16px 0;
+}
+
+.issue-list-item:first-of-type {
+  border-style: solid;
+}
+
+#comment-box-wrapper {
+  margin-top: 32px;
 }
