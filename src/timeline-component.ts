@@ -1,20 +1,17 @@
-import { User, Issue, IssueComment } from './github';
-import { CommentComponent } from './comment-component';
-import { scheduleMeasure } from './measure';
+import { User, Issue, IssueComment } from './github'
+import { CommentComponent } from './comment-component'
+import { scheduleMeasure } from './measure'
 
 export class TimelineComponent {
-  public readonly element: HTMLElement;
-  private readonly timeline: CommentComponent[] = [];
-  private readonly countAnchor: HTMLAnchorElement;
-  private readonly marker: Node;
-  private count: number = 0;
+  public readonly element: HTMLElement
+  private readonly timeline: CommentComponent[] = []
+  private readonly countAnchor: HTMLAnchorElement
+  private readonly marker: Node
+  private count: number = 0
 
-  constructor(
-    private user: User | null,
-    private issue: Issue | null
-  ) {
-    this.element = document.createElement('main');
-    this.element.classList.add('timeline');
+  constructor(private user: User | null, private issues: Issue[] | null) {
+    this.element = document.createElement('main')
+    this.element.classList.add('timeline')
     this.element.innerHTML = `
       <h1 class="timeline-header">
         <a class="text-link" target="_blank"></a>
@@ -22,64 +19,76 @@ export class TimelineComponent {
           - powered by
           <a class="text-link" href="https://utteranc.es" target="_blank">utteranc.es</a>
         </em>
-      </h1>`;
-    this.countAnchor = this.element.firstElementChild!.firstElementChild as HTMLAnchorElement;
-    this.marker = document.createComment('marker');
-    this.element.appendChild(this.marker);
-    this.setIssue(this.issue);
-    this.renderCount();
+      </h1>`
+    this.countAnchor = this.element.firstElementChild!
+      .firstElementChild as HTMLAnchorElement
+    this.marker = document.createComment('marker')
+    this.element.appendChild(this.marker)
+    this.setIssues(this.issues)
+    this.renderCount()
   }
 
   public setUser(user: User | null) {
-    this.user = user;
-    const login = user ? user.login : null;
+    this.user = user
+    const login = user ? user.login : null
     for (let i = 0; i < this.timeline.length; i++) {
-      this.timeline[i].setCurrentUser(login);
+      this.timeline[i].setCurrentUser(login)
     }
-    scheduleMeasure();
+    scheduleMeasure()
   }
 
-  public setIssue(issue: Issue | null) {
-    this.issue = issue;
-    if (issue) {
-      this.count = issue.comments;
-      this.countAnchor.href = issue.html_url;
-      this.renderCount();
+  public setIssues(issues: Issue[] | null) {
+    this.issues = issues
+    if (issues) {
+      console.log('hejs')
+
+      this.count = issues.length
+      // this.countAnchor.href = issue.html_url
+      this.renderCount()
     } else {
-      this.countAnchor.removeAttribute('href');
+      this.countAnchor.removeAttribute('href')
     }
   }
 
   public insertComment(comment: IssueComment, incrementCount: boolean) {
     const component = new CommentComponent(
       comment,
-      this.user ? this.user.login : null);
+      this.user ? this.user.login : null
+    )
 
-    const index = this.timeline.findIndex(x => x.comment.id >= comment.id);
+    const index = this.timeline.findIndex(x => x.comment.id >= comment.id)
     if (index === -1) {
-      this.timeline.push(component);
-      this.element.insertBefore(component.element, this.marker);
+      this.timeline.push(component)
+      this.element.insertBefore(component.element, this.marker)
     } else {
-      const next = this.timeline[index];
-      const remove = next.comment.id === comment.id;
-      this.element.insertBefore(component.element, next.element);
-      this.timeline.splice(index, remove ? 1 : 0, component);
+      const next = this.timeline[index]
+      const remove = next.comment.id === comment.id
+      this.element.insertBefore(component.element, next.element)
+      this.timeline.splice(index, remove ? 1 : 0, component)
       if (remove) {
-        next.element.remove();
+        next.element.remove()
       }
     }
 
     if (incrementCount) {
-      this.count++;
-      this.renderCount();
+      this.count++
+      this.renderCount()
     }
 
-    scheduleMeasure();
+    scheduleMeasure()
   }
 
-  public insertPageLoader(insertAfter: IssueComment, count: number, callback: () => void) {
-    const { element: insertAfterElement } = this.timeline.find(x => x.comment.id >= insertAfter.id)!;
-    insertAfterElement.insertAdjacentHTML('afterend', `
+  public insertPageLoader(
+    insertAfter: IssueComment,
+    count: number,
+    callback: () => void
+  ) {
+    const { element: insertAfterElement } = this.timeline.find(
+      x => x.comment.id >= insertAfter.id
+    )!
+    insertAfterElement.insertAdjacentHTML(
+      'afterend',
+      `
       <div class="page-loader">
         <div class="zigzag"></div>
         <button type="button" class="btn btn-outline btn-large">
@@ -87,25 +96,28 @@ export class TimelineComponent {
           <span>Load more...</span>
         </button>
       </div>
-    `);
-    const element = insertAfterElement.nextElementSibling!;
-    const button = element.lastElementChild! as HTMLButtonElement;
-    const statusSpan = button.lastElementChild!;
-    button.onclick = callback;
+    `
+    )
+    const element = insertAfterElement.nextElementSibling!
+    const button = element.lastElementChild! as HTMLButtonElement
+    const statusSpan = button.lastElementChild!
+    button.onclick = callback
 
     return {
       setBusy() {
-        statusSpan.textContent = 'Loading...';
-        button.disabled = true;
+        statusSpan.textContent = 'Loading...'
+        button.disabled = true
       },
       remove() {
-        button.onclick = null;
-        element.remove();
+        button.onclick = null
+        element.remove()
       }
-    };
+    }
   }
 
   private renderCount() {
-    this.countAnchor.textContent = `${this.count} Comment${this.count === 1 ? '' : 's'}`;
+    this.countAnchor.textContent = `${this.count} Issue${
+      this.count === 1 ? '' : 's'
+    }`
   }
 }

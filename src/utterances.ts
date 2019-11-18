@@ -2,7 +2,7 @@ import { pageAttributes as page } from './page-attributes'
 import {
   Issue,
   setRepoContext,
-  loadIssueByTerm,
+  loadIssuesByTerm,
   loadCommentsPage,
   loadUser,
   postComment,
@@ -20,52 +20,50 @@ import { enableReactions } from './reactions'
 
 setRepoContext(page)
 
-function loadIssue(): Promise<Issue | null> {
-  return loadIssueByTerm(page.issueTerm as string)
+function loadIssues(): Promise<Issue[] | null> {
+  return loadIssuesByTerm(page.issueTerm as string)
 }
 
 async function bootstrap() {
   await loadToken()
   // tslint:disable-next-line:prefer-const
-  let [issue, user] = await Promise.all([
-    loadIssue(),
+  let [issues, user] = await Promise.all([
+    loadIssues(),
     loadUser(),
     loadTheme(page.theme, page.origin)
   ])
 
   startMeasuring(page.origin)
 
-  const timeline = new TimelineComponent(user, issue)
+  const timeline = new TimelineComponent(user, issues)
   document.body.appendChild(timeline.element)
 
-  if (issue && issue.comments > 0) {
-    renderComments(issue, timeline)
-  }
+  // if (issue && issue.comments > 0) {
+  //   renderComments(issue, timeline)
+  // }
 
   scheduleMeasure()
 
-  if (issue && issue.locked) {
-    return
-  }
+  // if (issue && issue.locked) {
+  //   return
+  // }
 
   enableReactions(!!user)
 
   const submit = async (markdown: string) => {
     await assertOrigin()
 
-    if (!issue) {
-      issue = await createIssue(
-        page.issueTerm as string,
-        page.url,
-        page.title,
-        markdown,
-        page.label
-      )
-      timeline.setIssue(issue)
-    }
+    const _issue = await createIssue(
+      page.issueTerm as string,
+      page.url,
+      page.title,
+      markdown,
+      page.label
+    )
+    // timeline.setIssue(issue) -> insert issue
 
-    const comment = await postComment(issue.number, markdown)
-    timeline.insertComment(comment, true)
+    // const comment = await postComment(issue.number, markdown)
+    // timeline.insertComment(comment, true)
     newCommentComponent.clear()
   }
 
@@ -90,6 +88,10 @@ addEventListener('not-installed', function handleNotInstalled() {
   )
   scheduleMeasure()
 })
+
+// function renderIssues(issues: Issue[], timeline: TimelineComponent) {
+//   timeline.in
+// }
 
 async function renderComments(issue: Issue, timeline: TimelineComponent) {
   const renderPage = (page: IssueComment[]) => {
