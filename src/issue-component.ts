@@ -71,6 +71,7 @@ export class IssueComponent {
     // }
 
     // processRenderedMarkdown(markdownBody)
+    scheduleMeasure()
   }
 
   // public setCurrentUser(currentUser: string | null) {
