@@ -162,7 +162,7 @@ export function loadJsonFile<T>(path: string, html = false) {
     })
 }
 
-export function loadIssueByTerm(term: string) {
+export function loadIssuesByTerm(term: string) {
   const q = `"${term}" type:issue in:title repo:${owner}/${repo}`
   const request = githubRequest(
     `search/issues?q=${encodeURIComponent(q)}&sort=created&order=asc`
@@ -178,21 +178,9 @@ export function loadIssueByTerm(term: string) {
       if (results.total_count === 0) {
         return null
       }
-      if (results.total_count > 1) {
-        // tslint:disable-next-line:no-console
-        console.warn(`Multiple issues match "${q}".`)
-      }
+
       term = term.toLowerCase()
-      for (const result of results.items) {
-        if (result.title.toLowerCase().indexOf(term) !== -1) {
-          return result
-        }
-      }
-      // tslint:disable-next-line:no-console
-      console.warn(
-        `Issue search results do not contain an issue with title matching "${term}". Using first result.`
-      )
-      return results.items[0]
+      return results.items
     })
 }
 
