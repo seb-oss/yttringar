@@ -33,6 +33,7 @@ export class IssueComponent {
     console.log(user)
     this.element = document.createElement('article')
     this.element.classList.add('timeline-comment')
+    this.element.classList.add('issue-list-item')
     if (user.login === currentUser) {
       this.element.classList.add('current-user')
     }
@@ -42,72 +43,42 @@ export class IssueComponent {
       0
     )
     this.element.innerHTML = `
-      <a class="avatar" href="${user.html_url}" target="_blank" tabindex="-1">
-        <img alt="@${user.login}" height="44" width="44"
-              src="${user.avatar_url}${avatarArgs}">
-      </a>
-      <div class="comment">
-        <header class="comment-header">
-          <span class="comment-meta">
-            <a class="text-link" href="${
-              user.html_url
-            }" target="_blank"><strong>${user.login}</strong></a>
-            commented
-            <a class="text-link" href="${html_url}" target="_blank">${timeAgo(
-      Date.now(),
-      new Date(created_at)
-    )}</a>
-          </span>
-          <div class="comment-actions">
-            ${
-              association
-                ? `<span class="author-association-badge">${association}</span>`
-                : ''
-            }
-            ${
-              currentUser
-                ? getReactionsMenuHtml(issue.reactions.url, 'right')
-                : getSignInToReactMenuHtml('right')
-            }
-          </div>
-        </header>
-        <div class="markdown-body markdown-body-scrollable">
-          ${title}
-        </div>
-        <div class="comment-footer" reaction-count="${reactionCount}" reaction-url="${
-      reactions.url
-    }">
-          <form class="reaction-list BtnGroup" action="javascript:">
-            ${reactionTypes
-              .map(id =>
-                getReactionHtml(reactions.url, id, !currentUser, reactions[id])
-              )
-              .join('')}
-          </form>
-          ${
-            currentUser
-              ? getReactionsMenuHtml(issue.reactions.url, 'center')
-              : getSignInToReactMenuHtml('center')
-          }
-        </div>
-      </div>`
-    console.log(this.element)
+    <div id="issue_1042" style="display: flex; flex-direction: row; margin-left: 16px;" >
+      
+      <div id="issue-icon" style="margin-top: 3px;" >
+        <span aria-label="Open issue">
+          <svg viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true">
+          <path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+        </span>
+      </div>
 
-    const markdownBody = this.element.querySelector('.markdown-body')!
-    const emailToggle = markdownBody.querySelector(
-      '.email-hidden-toggle a'
-    ) as HTMLAnchorElement
-    if (emailToggle) {
-      const emailReply = markdownBody.querySelector(
-        '.email-hidden-reply'
-      ) as HTMLDivElement
-      emailToggle.onclick = event => {
-        event.preventDefault()
-        emailReply.classList.toggle('expanded')
-      }
-    }
+      <div id="issue-text-wrapper" style="display: flex; flex-direction: column; margin-left: 8px;">
+        <a id="issue_1042_link" href="/seb-common/Developer-garden/issues/1042">title</a>
+        <span>
+        #1042
+          opened <relative-time datetime="2019-11-18T12:14:51Z" title="18 nov. 2019 13:14 CET">18 minutes ago</relative-time> by
+          <a title="Open issues created by s2078C" href="/seb-common/Developer-garden/issues?q=is%3Aissue+is%3Aopen+author%3As2078C">s2078C</a>
+        </span>
+      </div>
 
-    processRenderedMarkdown(markdownBody)
+    </div>
+`
+
+    // const markdownBody = this.element.querySelector('.markdown-body')!
+    // const emailToggle = markdownBody.querySelector(
+    //   '.email-hidden-toggle a'
+    // ) as HTMLAnchorElement
+    // if (emailToggle) {
+    //   const emailReply = markdownBody.querySelector(
+    //     '.email-hidden-reply'
+    //   ) as HTMLDivElement
+    //   emailToggle.onclick = event => {
+    //     event.preventDefault()
+    //     emailReply.classList.toggle('expanded')
+    //   }
+    // }
+
+    // processRenderedMarkdown(markdownBody)
   }
 
   public setCurrentUser(currentUser: string | null) {

@@ -4,7 +4,7 @@
 }
 
 .timeline-header {
-  margin: 0;
+  margin: 16px 0;
   padding-left: $spacer-3;
   font-size: $body-font-size;
   color: $text-gray;
@@ -20,7 +20,7 @@
 .page-loader {
   position: relative;
   margin: 40px 0;
-  
+
   .btn {
     position: absolute;
     left: 50%;
