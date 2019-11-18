@@ -50,8 +50,6 @@ document.head.insertAdjacentHTML(
       box-sizing: border-box;
       width: 100%;
       max-width: 760px;
-      margin-left: auto;
-      margin-right: auto;
     }
     .utterances-frame {
       position: absolute;
