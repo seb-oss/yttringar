@@ -157,10 +157,31 @@
   padding: 16px 0;
 }
 
+#issue-text-wrapper > a {
+  font-weight: 600;
+  font-size: 16px;
+  color: black;
+}
+
+#issue-text-wrapper > a:hover {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+#issue-text-wrapper > span {
+  font-size: 12px;
+  color: #586069;
+}
+
 .issue-list-item:first-of-type {
   border-style: solid;
 }
 
 #comment-box-wrapper {
   margin-top: 32px;
+}
+
+#issue-icon {
+  color: #28a745;
+  fill: currentColor;
 }
