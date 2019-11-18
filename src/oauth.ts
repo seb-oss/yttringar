@@ -1,23 +1,23 @@
-import { UTTERANCES_API } from './utterances-api';
-import { param } from './deparam';
+import { settings } from './config'
+import { param } from './deparam'
 
-export const token = { value: null as null | string };
+export const token = { value: null as null | string }
 
 // tslint:disable-next-line:variable-name
 export function getLoginUrl(redirect_uri: string) {
-  return `${UTTERANCES_API}/authorize?${param({ redirect_uri })}`;
+  return `${settings.UTTERANCES_API}/authorize?${param({ redirect_uri })}`
 }
 
 export async function loadToken(): Promise<string | null> {
   if (token.value) {
-    return token.value;
+    return token.value
   }
-  const url = `${UTTERANCES_API}/token`;
-  const response = await fetch(url, { mode: 'cors', credentials: 'include' });
+  const url = `${settings.UTTERANCES_API}/token`
+  const response = await fetch(url, { mode: 'cors', credentials: 'include' })
   if (response.ok) {
-    const t = await response.json();
-    token.value = t;
-    return t;
+    const t = await response.json()
+    token.value = t
+    return t
   }
-  return null;
+  return null
 }
