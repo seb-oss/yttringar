@@ -13,7 +13,7 @@ export async function loadToken(): Promise<string | null> {
     return token.value;
   }
   const url = `${UTTERANCES_API}/token`;
-  const response = await fetch(url, { method: 'POST', mode: 'cors', credentials: 'include' });
+  const response = await fetch(url, { mode: 'cors', credentials: 'include' });
   if (response.ok) {
     const t = await response.json();
     token.value = t;
