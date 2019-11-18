@@ -162,6 +162,27 @@ export function loadJsonFile<T>(path: string, html = false) {
     })
 }
 
+export function getNameFromUserLogin(login: string) {
+  const req = githubRequest(`users/${login}`)
+  return githubFetch(req)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error fetching issue via search.')
+      }
+      return response.json()
+    })
+    .then(res => formatName(res.name))
+}
+
+function formatName(name: string) {
+  if (name.includes(',')) {
+    const nameArray = name.split(',')
+    return nameArray[1].replace(/\s/g, '') + ' ' + nameArray[0]
+  } else {
+    return name
+  }
+}
+
 export function loadIssuesByTerm(term: string) {
   const q = `"Page id: ${term}" type:issue is:open in:body repo:${owner}/${repo}`
   const request = githubRequest(
@@ -311,6 +332,7 @@ interface IssueSearchResponse {
 
 export interface User {
   login: string
+  name: string
   id: number
   avatar_url: string
   gravatar_id: string

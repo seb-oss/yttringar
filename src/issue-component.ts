@@ -1,47 +1,38 @@
-import { CommentAuthorAssociation, Issue, reactionTypes } from './github'
-import { timeAgo } from './time-ago'
+import { Issue } from './github'
+import { timeAgo, formatDate } from './time-ago'
 import { scheduleMeasure } from './measure'
-import {
-  getReactionsMenuHtml,
-  getReactionHtml,
-  getSignInToReactMenuHtml
-} from './reactions'
+// import {
+//   getReactionsMenuHtml,
+//   getReactionHtml,
+//   getSignInToReactMenuHtml
+// } from './reactions'
 
-const avatarArgs = '?v=3&s=88'
-const displayAssociations: Record<CommentAuthorAssociation, string> = {
-  COLLABORATOR: 'Collaborator',
-  CONTRIBUTOR: 'Contributor',
-  MEMBER: 'Member',
-  OWNER: 'Owner',
-  FIRST_TIME_CONTRIBUTOR: 'First time contributor',
-  FIRST_TIMER: 'First timer',
-  NONE: ''
-}
+// const displayAssociations: Record<CommentAuthorAssociation, string> = {
+//   COLLABORATOR: 'Collaborator',
+//   CONTRIBUTOR: 'Contributor',
+//   MEMBER: 'Member',
+//   OWNER: 'Owner',
+//   FIRST_TIME_CONTRIBUTOR: 'First time contributor',
+//   FIRST_TIMER: 'First timer',
+//   NONE: ''
+// }
 
 export class IssueComponent {
   public readonly element: HTMLElement
 
-  constructor(public issue: Issue, private currentUser: string | null) {
-    const {
-      user,
-      html_url,
-      created_at,
-      author_association,
-      reactions,
-      title
-    } = issue
-    console.log(user)
+  constructor(public issue: Issue, creatorName: string) {
+    const { html_url, created_at, title } = issue
     this.element = document.createElement('article')
     this.element.classList.add('timeline-comment')
     this.element.classList.add('issue-list-item')
-    if (user.login === currentUser) {
-      this.element.classList.add('current-user')
-    }
-    const association = displayAssociations[author_association]
-    const reactionCount = reactionTypes.reduce(
-      (sum, id) => sum + reactions[id],
-      0
-    )
+    // if (user.login === currentUser) {
+    //   this.element.classList.add('current-user')
+    // }
+    // const association = displayAssociations[author_association]
+    // const reactionCount = reactionTypes.reduce(
+    //   (sum, id) => sum + reactions[id],
+    //   0
+    // )
     this.element.innerHTML = `
     <div id="issue_1042" style="display: flex; flex-direction: row; margin-left: 16px;" >
       
@@ -53,11 +44,12 @@ export class IssueComponent {
       </div>
 
       <div id="issue-text-wrapper" style="display: flex; flex-direction: column; margin-left: 8px;">
-        <a id="issue_1042_link" href="/seb-common/Developer-garden/issues/1042">title</a>
+        <a id="issue_1042_link" href="${html_url}">${title}</a>
         <span>
-        #1042
-          opened <relative-time datetime="2019-11-18T12:14:51Z" title="18 nov. 2019 13:14 CET">18 minutes ago</relative-time> by
-          <a title="Open issues created by s2078C" href="/seb-common/Developer-garden/issues?q=is%3Aissue+is%3Aopen+author%3As2078C">s2078C</a>
+          Opened <relative-time title="${formatDate(
+            new Date(created_at)
+          )}">${timeAgo(Date.now(), new Date(created_at))}</relative-time> by
+          <a title="Open issues created by ${creatorName}" href="/seb-common/Developer-garden/issues?q=is%3Aissue+is%3Aopen+author%3As2078C">${creatorName}</a>
         </span>
       </div>
 
@@ -81,18 +73,18 @@ export class IssueComponent {
     // processRenderedMarkdown(markdownBody)
   }
 
-  public setCurrentUser(currentUser: string | null) {
-    if (this.currentUser === currentUser) {
-      return
-    }
-    this.currentUser = currentUser
+  // public setCurrentUser(currentUser: string | null) {
+  //   if (this.currentUser === currentUser) {
+  //     return
+  //   }
+  //   this.currentUser = currentUser
 
-    if (this.issue.user.login === this.currentUser) {
-      this.element.classList.add('current-user')
-    } else {
-      this.element.classList.remove('current-user')
-    }
-  }
+  //   if (this.issue.user.login === this.currentUser) {
+  //     this.element.classList.add('current-user')
+  //   } else {
+  //     this.element.classList.remove('current-user')
+  //   }
+  // }
 }
 
 export function processRenderedMarkdown(markdownBody: Element) {

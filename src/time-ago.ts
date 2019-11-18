@@ -11,6 +11,13 @@ const thresholds = [
 
 const formatOptions: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
 
+export function formatDate(value: Date) {
+  return `${value.toLocaleDateString(undefined, Object.assign(formatOptions, {
+    hour: 'numeric',
+    minute: 'numeric'
+  }))}`;
+}
+
 export function timeAgo(current: number, value: Date) {
   const elapsed = current - value.getTime();
   if (elapsed < 5000) {
