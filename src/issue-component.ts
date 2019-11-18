@@ -1,4 +1,4 @@
-import { CommentAuthorAssociation, IssueComment, reactionTypes } from './github'
+import { CommentAuthorAssociation, Issue, reactionTypes } from './github'
 import { timeAgo } from './time-ago'
 import { scheduleMeasure } from './measure'
 import {
@@ -18,21 +18,19 @@ const displayAssociations: Record<CommentAuthorAssociation, string> = {
   NONE: ''
 }
 
-export class CommentComponent {
+export class IssueComponent {
   public readonly element: HTMLElement
 
-  constructor(
-    public comment: IssueComment,
-    private currentUser: string | null
-  ) {
+  constructor(public issue: Issue, private currentUser: string | null) {
     const {
       user,
       html_url,
       created_at,
-      body_html,
       author_association,
-      reactions
-    } = comment
+      reactions,
+      title
+    } = issue
+    console.log(user)
     this.element = document.createElement('article')
     this.element.classList.add('timeline-comment')
     if (user.login === currentUser) {
@@ -68,13 +66,13 @@ export class CommentComponent {
             }
             ${
               currentUser
-                ? getReactionsMenuHtml(comment.reactions.url, 'right')
+                ? getReactionsMenuHtml(issue.reactions.url, 'right')
                 : getSignInToReactMenuHtml('right')
             }
           </div>
         </header>
         <div class="markdown-body markdown-body-scrollable">
-          ${body_html}
+          ${title}
         </div>
         <div class="comment-footer" reaction-count="${reactionCount}" reaction-url="${
       reactions.url
@@ -88,11 +86,12 @@ export class CommentComponent {
           </form>
           ${
             currentUser
-              ? getReactionsMenuHtml(comment.reactions.url, 'center')
+              ? getReactionsMenuHtml(issue.reactions.url, 'center')
               : getSignInToReactMenuHtml('center')
           }
         </div>
       </div>`
+    console.log(this.element)
 
     const markdownBody = this.element.querySelector('.markdown-body')!
     const emailToggle = markdownBody.querySelector(
@@ -117,7 +116,7 @@ export class CommentComponent {
     }
     this.currentUser = currentUser
 
-    if (this.comment.user.login === this.currentUser) {
+    if (this.issue.user.login === this.currentUser) {
       this.element.classList.add('current-user')
     } else {
       this.element.classList.remove('current-user')
