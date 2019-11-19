@@ -51,11 +51,11 @@ export class NewCommentComponent {
             </button>
           </nav>
         </header>
-        <div id="comment-title" class="comment-title comment-field">
-          <textarea class="form-control" placeholder="Title" aria-label="title"></textarea>
+        <div class="comment-title comment-field">
+          <textarea id="comment-title"class="form-control" placeholder="Title" aria-label="title"></textarea>
         </div>
-        <div id="comment-body" class="comment-body comment-field">
-          <textarea class="form-control" scrolling="no" placeholder="Leave a comment" aria-label="comment"></textarea>
+        <div  class="comment-body comment-field">
+          <textarea id="comment-body" class="form-control" scrolling="no" placeholder="Leave a comment" aria-label="comment"></textarea>
           <div id="markdown-body" class="markdown-body" style="display: none">
             ${nothingToPreview}
           </div>
@@ -106,7 +106,7 @@ export class NewCommentComponent {
     this.form.addEventListener('submit', this.handleSubmit)
     this.form.addEventListener('click', this.handleClick)
     this.form.addEventListener('keydown', this.handleKeyDown)
-    // handleTextAreaResize(this.bodyTextArea)
+    handleTextAreaResize(this.bodyTextArea)
   }
 
   public setUser(user: User | null) {
@@ -130,6 +130,7 @@ export class NewCommentComponent {
 
   public clear() {
     this.bodyTextArea.value = ''
+    this.titleTextArea.value = ''
   }
 
   private handleInput = (e: Event) => {
@@ -199,6 +200,7 @@ export class NewCommentComponent {
     target.setAttribute('aria-selected', 'true')
     const isPreview = target.classList.contains('tab-preview')
     this.bodyTextArea.style.display = isPreview ? 'none' : ''
+    this.titleTextArea.readOnly = isPreview
     this.preview.style.display = isPreview ? '' : 'none'
     scheduleMeasure()
   }
