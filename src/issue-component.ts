@@ -49,7 +49,9 @@ export class IssueComponent {
           Opened <relative-time title="${formatDate(
             new Date(created_at)
           )}">${timeAgo(Date.now(), new Date(created_at))}</relative-time> by
-          <a title="Open issues created by ${creatorName}" href="/seb-common/Developer-garden/issues?q=is%3Aissue+is%3Aopen+author%3As2078C">${creatorName}</a>
+          <a title="View ${creatorName}'s profile" href="${
+      issue.user.html_url
+    }">${creatorName}</a>
         </span>
       </div>
 
