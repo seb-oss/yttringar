@@ -51,14 +51,15 @@ async function bootstrap() {
 
   enableReactions(!!user)
 
-  const submit = async (markdown: string) => {
+  const submit = async (title: string, markdown: string) => {
     await assertOrigin()
 
-    const _issue = await createIssue(
+    await createIssue(
       page.issueTerm as string,
       page.url,
       page.title,
       markdown,
+      title,
       page.label
     )
     // timeline.setIssue(issue) -> insert issue

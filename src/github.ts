@@ -241,12 +241,11 @@ export function loadUser(): Promise<User | null> {
 export function createIssue(
   issueTerm: string,
   documentUrl: string,
-  title: string,
+  pageTitle: string,
   description: string,
+  title: string,
   label: string
 ) {
-  console.log(title, description)
-
   const url = `${settings.UTTERANCES_API}/repos/${owner}/${repo}/issues${
     label ? `?label=${encodeURIComponent(label)}` : ''
   }`
@@ -256,9 +255,10 @@ export function createIssue(
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      title: title,
+      pageTitle,
       pageId: issueTerm,
       issueBody: description,
+      issueTitle: title,
       documentUrl
     })
   })
