@@ -197,7 +197,7 @@ export function loadIssuesByTerm(term: string) {
     })
     .then(results => {
       if (results.total_count === 0) {
-        return null
+        return []
       }
 
       term = term.toLowerCase()

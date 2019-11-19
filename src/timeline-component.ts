@@ -8,7 +8,7 @@ export class TimelineComponent {
   private readonly marker: Node
   private count: number = 0
 
-  constructor(private user: User | null, private issues: Issue[] | null) {
+  constructor(private user: User | null, private issues: Issue[]) {
     this.element = document.createElement('main')
     this.element.classList.add('timeline')
     this.element.innerHTML = `
@@ -36,54 +36,27 @@ export class TimelineComponent {
   //   scheduleMeasure()
   // }
 
-  public async setIssues(issues: Issue[] | null) {
+  public async setIssues(issues: Issue[]) {
     this.issues = issues
     if (issues) {
       this.count = issues.length
-      // this.countAnchor.href = issue.html_url
 
-      const components = await Promise.all(
-        issues.map(async issue => {
-          const name = await getNameFromUserLogin(issue.user.login)
+      issues.reduce((promise: Promise<void>, issue: Issue) => {
+        return promise.then(() => this.insertIssue(issue))
+      }, Promise.resolve())
 
-          return new IssueComponent(issue, name)
-        })
-      )
-      this.timeline.concat(components)
-      components.map(e => this.element.insertBefore(e.element, this.marker))
       this.renderCount()
     } else {
       this.countAnchor.removeAttribute('href')
     }
   }
 
-  // public insertComment(comment: IssueComment, incrementCount: boolean) {
-  //   const component = new CommentComponent(
-  //     comment,
-  //     this.user ? this.user.login : null
-  //   )
-
-  //   const index = this.timeline.findIndex(x => x.comment.id >= comment.id)
-  //   if (index === -1) {
-  //     this.timeline.push(component)
-  //     this.element.insertBefore(component.element, this.marker)
-  //   } else {
-  //     const next = this.timeline[index]
-  //     const remove = next.comment.id === comment.id
-  //     this.element.insertBefore(component.element, next.element)
-  //     this.timeline.splice(index, remove ? 1 : 0, component)
-  //     if (remove) {
-  //       next.element.remove()
-  //     }
-  //   }
-
-  //   if (incrementCount) {
-  //     this.count++
-  //     this.renderCount()
-  //   }
-
-  //   scheduleMeasure()
-  // }
+  public async insertIssue(issue: Issue) {
+    const userfullName = await getNameFromUserLogin(issue.user.login)
+    const issueComponent = new IssueComponent(issue, userfullName)
+    this.timeline.push(issueComponent)
+    this.element.insertBefore(issueComponent.element, this.marker)
+  }
 
   // public insertPageLoader(
   //   insertAfter: IssueComment,
