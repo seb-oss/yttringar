@@ -29,7 +29,7 @@ export class NewCommentComponent {
 
   constructor(
     private user: User | null,
-    private readonly submit: (markdown: string) => Promise<void>
+    private readonly submit: (title: string, markdown: string) => Promise<void>
   ) {
     this.element = document.createElement('article')
     this.element.classList.add('timeline-comment')
@@ -102,7 +102,7 @@ export class NewCommentComponent {
     this.setUser(user)
     this.submitButton.disabled = true
 
-    this.bodyTextArea.addEventListener('input', this.handleInput)
+    this.bodyTextArea.addEventListener('input', this.handleBodyInput)
     this.form.addEventListener('submit', this.handleSubmit)
     this.form.addEventListener('click', this.handleClick)
     this.form.addEventListener('keydown', this.handleKeyDown)
@@ -118,12 +118,14 @@ export class NewCommentComponent {
       this.avatar.alt = '@' + user.login
       this.avatar.src = user.avatar_url + '?v=3&s=88'
       this.bodyTextArea.disabled = false
+      this.titleTextArea.disabled = false
       this.bodyTextArea.placeholder = 'Leave a comment'
     } else {
       this.avatarAnchor.removeAttribute('href')
       this.avatar.alt = '@anonymous'
       this.avatar.src = anonymousAvatarUrl
       this.bodyTextArea.disabled = true
+      this.titleTextArea.disabled = true
       this.bodyTextArea.placeholder = 'Sign in to comment'
     }
   }
@@ -133,7 +135,7 @@ export class NewCommentComponent {
     this.titleTextArea.value = ''
   }
 
-  private handleInput = (e: Event) => {
+  private handleBodyInput = (e: Event) => {
     getRepoConfig() // preload repo config
     const target = e.target as HTMLInputElement
     const text = target.value
@@ -171,12 +173,17 @@ export class NewCommentComponent {
     }
     this.submitting = true
     this.bodyTextArea.disabled = true
+    this.titleTextArea.disabled = true
     this.submitButton.disabled = true
-    await this.submit(this.bodyTextArea.value).catch(() => 0)
+    await this.submit(
+      this.titleTextArea.value,
+      this.bodyTextArea.value
+    ).catch(e => console.log('couldnt creat issue: ', e))
     this.submitting = false
     this.bodyTextArea.disabled = !this.user
     this.bodyTextArea.value = ''
-    this.submitButton.disabled = false
+    this.titleTextArea.disabled = !this.user
+    this.titleTextArea.value = ''
     this.handleClick({
       ...event,
       target: this.form.querySelector('.tabnav-tab.tab-write')
