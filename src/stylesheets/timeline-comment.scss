@@ -52,9 +52,32 @@
     font-size: $body-font-size;
   }
 
-  .comment-body {
+  .comment-field {
     padding: $spacer-2;
+    width: 100%;
 
+    textarea:focus {
+      box-shadow: $btn-input-focus-shadow;
+    }
+
+    textarea:disabled {
+      background-color: $bg-gray;
+    }
+
+    textarea,
+    .markdown-body {
+      padding: $spacer-2;
+      width: 100%;
+      max-width: 100%;
+      border: $border;
+      border-radius: $border-radius;
+    }
+  }
+
+  .comment-field:last-of-type {
+    padding-top: 0;
+  }
+  .comment-body {
     textarea {
       appearance: none;
       display: block;
@@ -65,18 +88,15 @@
     textarea,
     .markdown-body {
       padding: $spacer-2;
-      width: 100%;
       min-height: 90px;
-      border: $border;
-      border-radius: $border-radius;
     }
+  }
 
-    textarea:focus {
-      box-shadow: $btn-input-focus-shadow;
-    }
-
-    textarea:disabled {
-      background-color: $bg-gray;
+  .comment-title {
+    textarea {
+      resize: none;
+      min-height: 37px;
+      height: 37px;
     }
   }
 
