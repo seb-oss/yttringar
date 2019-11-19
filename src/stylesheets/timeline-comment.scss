@@ -52,6 +52,9 @@
     font-size: $body-font-size;
   }
 
+  textarea:read-only {
+    box-shadow: none !important;
+  }
   .comment-field {
     padding: $spacer-2;
     width: 100%;
@@ -95,8 +98,8 @@
   .comment-title {
     textarea {
       resize: none;
-      min-height: 37px;
-      height: 37px;
+      min-height: 38px;
+      height: 38px;
     }
   }
 
