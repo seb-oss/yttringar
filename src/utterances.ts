@@ -20,7 +20,7 @@ import { enableReactions } from './reactions'
 
 setRepoContext(page)
 
-function loadIssues(): Promise<Issue[] | null> {
+function loadIssues(): Promise<Issue[]> {
   return loadIssuesByTerm(page.issueTerm as string)
 }
 
@@ -54,7 +54,7 @@ async function bootstrap() {
   const submit = async (title: string, markdown: string) => {
     await assertOrigin()
 
-    await createIssue(
+    const issue = await createIssue(
       page.issueTerm as string,
       page.url,
       page.title,
@@ -62,10 +62,8 @@ async function bootstrap() {
       title,
       page.label
     )
-    // timeline.setIssue(issue) -> insert issue
+    timeline.insertIssue(issue)
 
-    // const comment = await postComment(issue.number, markdown)
-    // timeline.insertComment(comment, true)
     newCommentComponent.clear()
   }
 
