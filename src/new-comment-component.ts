@@ -18,7 +18,8 @@ export class NewCommentComponent {
   private avatarAnchor: HTMLAnchorElement
   private avatar: HTMLImageElement
   private form: HTMLFormElement
-  private textarea: HTMLTextAreaElement
+  private titleTextArea: HTMLTextAreaElement
+  private bodyTextArea: HTMLTextAreaElement
   private preview: HTMLDivElement
   private submitButton: HTMLButtonElement
   private signInAnchor: HTMLAnchorElement
@@ -50,9 +51,12 @@ export class NewCommentComponent {
             </button>
           </nav>
         </header>
-        <div class="comment-body">
-          <textarea class="form-control" placeholder="Leave a comment" aria-label="comment"></textarea>
-          <div class="markdown-body" style="display: none">
+        <div id="comment-title" class="comment-title comment-field">
+          <textarea class="form-control" placeholder="Title" aria-label="title"></textarea>
+        </div>
+        <div id="comment-body" class="comment-body comment-field">
+          <textarea class="form-control" scrolling="no" placeholder="Leave a comment" aria-label="comment"></textarea>
+          <div id="markdown-body" class="markdown-body" style="display: none">
             ${nothingToPreview}
           </div>
         </div>
@@ -78,10 +82,18 @@ export class NewCommentComponent {
     this.avatarAnchor = this.element.firstElementChild as HTMLAnchorElement
     this.avatar = this.avatarAnchor.firstElementChild as HTMLImageElement
     this.form = this.avatarAnchor.nextElementSibling as HTMLFormElement
-    this.textarea = this.form!.firstElementChild!.nextElementSibling!
-      .firstElementChild as HTMLTextAreaElement
-    this.preview = this.form!.firstElementChild!.nextElementSibling!
-      .lastElementChild as HTMLDivElement
+
+    this.bodyTextArea = this.element.querySelector(
+      '#comment-body'
+    ) as HTMLTextAreaElement
+    this.titleTextArea = this.element.querySelector(
+      '#comment-title'
+    ) as HTMLTextAreaElement
+
+    this.preview = this.element.querySelector(
+      '#markdown-body'
+    ) as HTMLDivElement
+
     this.signInAnchor = this.form!.lastElementChild!
       .lastElementChild! as HTMLAnchorElement
     this.submitButton = this.signInAnchor
@@ -90,11 +102,11 @@ export class NewCommentComponent {
     this.setUser(user)
     this.submitButton.disabled = true
 
-    this.textarea.addEventListener('input', this.handleInput)
+    this.bodyTextArea.addEventListener('input', this.handleInput)
     this.form.addEventListener('submit', this.handleSubmit)
     this.form.addEventListener('click', this.handleClick)
     this.form.addEventListener('keydown', this.handleKeyDown)
-    handleTextAreaResize(this.textarea)
+    // handleTextAreaResize(this.bodyTextArea)
   }
 
   public setUser(user: User | null) {
@@ -105,31 +117,33 @@ export class NewCommentComponent {
       this.avatarAnchor.href = user.html_url
       this.avatar.alt = '@' + user.login
       this.avatar.src = user.avatar_url + '?v=3&s=88'
-      this.textarea.disabled = false
-      this.textarea.placeholder = 'Leave a comment'
+      this.bodyTextArea.disabled = false
+      this.bodyTextArea.placeholder = 'Leave a comment'
     } else {
       this.avatarAnchor.removeAttribute('href')
       this.avatar.alt = '@anonymous'
       this.avatar.src = anonymousAvatarUrl
-      this.textarea.disabled = true
-      this.textarea.placeholder = 'Sign in to comment'
+      this.bodyTextArea.disabled = true
+      this.bodyTextArea.placeholder = 'Sign in to comment'
     }
   }
 
   public clear() {
-    this.textarea.value = ''
+    this.bodyTextArea.value = ''
   }
 
-  private handleInput = () => {
+  private handleInput = (e: Event) => {
     getRepoConfig() // preload repo config
-    const text = this.textarea.value
+    const target = e.target as HTMLInputElement
+    const text = target.value
     const isWhitespace = /^\s*$/.test(text)
     this.submitButton.disabled = isWhitespace
+
     if (
-      this.textarea.scrollHeight < 450 &&
-      this.textarea.offsetHeight < this.textarea.scrollHeight
+      target.scrollHeight < 450 &&
+      target.offsetHeight < target.scrollHeight
     ) {
-      this.textarea.style.height = `${this.textarea.scrollHeight}px`
+      target.style.height = `${target.scrollHeight}px`
       scheduleMeasure()
     }
 
@@ -155,12 +169,12 @@ export class NewCommentComponent {
       return
     }
     this.submitting = true
-    this.textarea.disabled = true
+    this.bodyTextArea.disabled = true
     this.submitButton.disabled = true
-    await this.submit(this.textarea.value).catch(() => 0)
+    await this.submit(this.bodyTextArea.value).catch(() => 0)
     this.submitting = false
-    this.textarea.disabled = !this.user
-    this.textarea.value = ''
+    this.bodyTextArea.disabled = !this.user
+    this.bodyTextArea.value = ''
     this.submitButton.disabled = false
     this.handleClick({
       ...event,
@@ -184,7 +198,7 @@ export class NewCommentComponent {
       .setAttribute('aria-selected', 'false')
     target.setAttribute('aria-selected', 'true')
     const isPreview = target.classList.contains('tab-preview')
-    this.textarea.style.display = isPreview ? 'none' : ''
+    this.bodyTextArea.style.display = isPreview ? 'none' : ''
     this.preview.style.display = isPreview ? '' : 'none'
     scheduleMeasure()
   }
