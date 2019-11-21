@@ -205,6 +205,11 @@ export function loadIssuesByTerm(term: string) {
     })
 }
 
+export function getIssuesPageForTermInBody(term: string) {
+  const q = `"Page id: ${term}" type:issue is:open in:body`
+  return `${settings.GITHUB_REPO_URL}issues?q=${encodeURIComponent(q)}`
+}
+
 function commentsRequest(issueNumber: number, page: number) {
   const url = `repos/${owner}/${repo}/issues/${issueNumber}/comments?page=${page}&per_page=${PAGE_SIZE}`
   const request = githubRequest(url)

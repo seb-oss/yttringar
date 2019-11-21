@@ -1,4 +1,9 @@
-import { User, Issue, getNameFromUserLogin } from './github'
+import {
+  User,
+  Issue,
+  getNameFromUserLogin,
+  getIssuesPageForTermInBody
+} from './github'
 import { IssueComponent } from './issue-component'
 
 export class TimelineComponent {
@@ -8,12 +13,18 @@ export class TimelineComponent {
   private readonly marker: Node
   private count: number = 0
 
-  constructor(private user: User | null, private issues: Issue[]) {
+  constructor(
+    private user: User | null,
+    private issues: Issue[],
+    pageId: string | null
+  ) {
     this.element = document.createElement('main')
     this.element.classList.add('timeline')
     this.element.innerHTML = `
       <h1 class="timeline-header">
-        <a class="text-link" target="_blank"></a>
+        <a class="text-link" href="${getIssuesPageForTermInBody(
+          pageId as string
+        )}"></a>
         <em>
           - powered by
           <a class="text-link" href="https://utteranc.es" target="_blank">utteranc.es</a>

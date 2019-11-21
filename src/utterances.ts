@@ -35,7 +35,7 @@ async function bootstrap() {
 
   startMeasuring(page.origin)
 
-  const timeline = new TimelineComponent(user, issues)
+  const timeline = new TimelineComponent(user, issues, page.issueTerm)
 
   document.body.appendChild(timeline.element)
 
