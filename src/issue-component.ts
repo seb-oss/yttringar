@@ -43,8 +43,8 @@ export class IssueComponent {
         </span>
       </div>
 
-      <div id="issue-text-wrapper" style="display: flex; flex-direction: column; margin-left: 8px;">
-        <a id="issue_1042_link" href="${html_url}">${title}</a>
+      <div class="issue-text-wrapper" style="display: flex; flex-direction: column; margin-left: 8px;">
+        <a href="${html_url}">${title}</a>
         <span>
           Opened <relative-time title="${formatDate(
             new Date(created_at)
