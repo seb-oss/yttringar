@@ -50,13 +50,9 @@ export class TimelineComponent {
   public async setIssues(issues: Issue[]) {
     this.issues = issues
     if (issues) {
-      this.count = issues.length
-
       issues.reduce((promise: Promise<void>, issue: Issue) => {
         return promise.then(() => this.insertIssue(issue))
       }, Promise.resolve())
-
-      this.renderCount()
     } else {
       this.countAnchor.removeAttribute('href')
     }
@@ -67,6 +63,8 @@ export class TimelineComponent {
     const issueComponent = new IssueComponent(issue, userfullName)
     this.timeline.push(issueComponent)
     this.element.insertBefore(issueComponent.element, this.marker)
+    this.count += 1
+    this.renderCount()
   }
 
   // public insertPageLoader(
