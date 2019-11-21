@@ -1,15 +1,10 @@
-.timeline {
-  margin: $spacer-3 0;
-  padding: 0 24px;
-}
-
 .timeline-header {
-  margin: 16px 0;
+  margin-bottom: 16px;
   padding-left: $spacer-3;
   font-size: $body-font-size;
   color: $text-gray;
   @media screen and (min-width: map-get($breakpoints, sm)) {
-    padding-left: 44 + $spacer-3;
+    padding-left: $spacer-3;
   }
 }
 
