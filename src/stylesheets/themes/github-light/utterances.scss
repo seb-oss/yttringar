@@ -1,2 +1,6 @@
-@import "../../utterances";
-@import "./syntax";
+@import '../../utterances';
+@import './syntax';
+
+.issue-title-link {
+  color: black;
+}

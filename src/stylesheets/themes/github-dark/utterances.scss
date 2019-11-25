@@ -1,4 +1,21 @@
-@import "./variables";
-@import "../../utterances";
-@import "./syntax";
-@import "./button.scss";
+@import './variables';
+@import '../../utterances';
+@import './syntax';
+@import './button.scss';
+
+.issue-title-link {
+  color: $gray9;
+}
+
+.issue-list-item {
+  border-color: #666666;
+  background: #202020;
+}
+
+.timeline {
+  background: #333333;
+}
+
+span.issue-meta {
+  color: #b3b3b3;
+}
