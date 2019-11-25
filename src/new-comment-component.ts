@@ -74,7 +74,7 @@ export class NewCommentComponent {
           </a>
           <button class="btn btn-primary" type="submit">Submit feedback</button>
           <a class="btn btn-primary" href="${getLoginUrl(
-            page.url
+            page.url + '#issues'
           )}" target="_top">Sign in to comment</a>
         </footer>
       </form>`
