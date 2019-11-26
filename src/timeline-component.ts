@@ -22,7 +22,7 @@ export class TimelineComponent {
     this.element.classList.add('timeline')
     this.element.innerHTML = `
       <h1 class="timeline-header">
-        <a class="text-link" href="${getIssuesPageForTermInBody(
+        <a target="_blank" class="text-link" href="${getIssuesPageForTermInBody(
           pageId as string
         )}"></a>
         <em>

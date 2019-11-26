@@ -44,12 +44,12 @@ export class IssueComponent {
       </div>
 
       <div class="issue-text-wrapper" style="display: flex; flex-direction: column; margin-left: 8px;">
-        <a class="issue-title-link" href="${html_url}">${title}</a>
+        <a target="_blank" class="issue-title-link" href="${html_url}">${title}</a>
         <span class="issue-meta">
           Opened <relative-time title="${formatDate(
             new Date(created_at)
           )}">${timeAgo(Date.now(), new Date(created_at))}</relative-time> by
-          <a title="View ${creatorName}'s profile" href="${
+          <a target="_blank" title="View ${creatorName}'s profile" href="${
       issue.user.html_url
     }">${creatorName}</a>
         </span>
