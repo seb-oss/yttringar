@@ -5,14 +5,14 @@ export const token = { value: null as null | string }
 
 // tslint:disable-next-line:variable-name
 export function getLoginUrl(redirect_uri: string) {
-  return `${settings.UTTERANCES_API}authorize?${param({ redirect_uri })}`
+  return `${settings.YTTRINGAR_API}authorize?${param({ redirect_uri })}`
 }
 
 export async function loadToken(): Promise<string | null> {
   if (token.value) {
     return token.value
   }
-  const url = `${settings.UTTERANCES_API}token`
+  const url = `${settings.YTTRINGAR_API}token`
   const response = await fetch(url, { mode: 'cors', credentials: 'include' })
   if (response.ok) {
     const t = await response.json()
