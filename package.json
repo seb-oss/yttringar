@@ -17,7 +17,8 @@
     "url": "https://github.com/utterance/utterances.git"
   },
   "scripts": {
-    "start": "parcel serve src/*.html src/client.ts src/stylesheets/themes/*/{index,utterances}.scss --no-hmr --port 4000",
+    "start": "serve dist --port 4000 --clipless --cors",
+    "dev": "parcel serve src/*.html src/client.ts src/stylesheets/themes/*/{index,utterances}.scss --no-hmr --port 4000",
     "build": "parcel build src/*.html src/client.ts src/stylesheets/themes/*/{index,utterances}.scss --experimental-scope-hoisting",
     "lint": "tslint --project tsconfig.json",
     "predeploy": "yarn run build && touch dist/.nojekyll && echo 'utteranc.es' > dist/CNAME",
@@ -37,5 +38,8 @@
     "sass": "^1.23.3",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "serve": "^6.5.8"
   }
 }
