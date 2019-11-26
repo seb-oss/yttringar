@@ -1,5 +1,5 @@
 {
-  "name": "utterances",
+  "name": "yttringar",
   "version": "1.0.0",
   "description": "A lightweight comments widget built on GitHub issues.",
   "private": true,
@@ -10,24 +10,21 @@
     "comments",
     "blog"
   ],
-  "homepage": "https://utteranc.es",
-  "bugs": "https://github.com/utterance/utterances/issues",
+  "homepage": "https://github.com/sebgroup/yttringar",
+  "bugs": "https://github.com/sebgroup/yttringar/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/utterance/utterances.git"
+    "url": "https://github.com/sebgroup/yttringar.git"
   },
   "scripts": {
     "start": "serve dist --port 4000 --clipless --cors",
     "dev": "parcel serve src/*.html src/client.ts src/stylesheets/themes/*/{index,utterances}.scss --no-hmr --port 4000",
     "build": "parcel build src/*.html src/client.ts src/stylesheets/themes/*/{index,utterances}.scss --experimental-scope-hoisting",
-    "lint": "tslint --project tsconfig.json",
-    "predeploy": "yarn run build && touch dist/.nojekyll && echo 'utteranc.es' > dist/CNAME",
-    "deploy": "gh-pages --dist dist"
+    "lint": "tslint --project tsconfig.json"
   },
   "devDependencies": {
     "@primer/css": "^13.2.0",
     "autoprefixer": "^9.7.1",
-    "gh-pages": "^2.1.1",
     "github-syntax-dark": "^0.5.0",
     "github-syntax-light": "^0.5.0",
     "parcel-bundler": "^1.12.4",
