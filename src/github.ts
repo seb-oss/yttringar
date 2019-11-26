@@ -251,7 +251,7 @@ export function createIssue(
   title: string,
   label: string
 ) {
-  const url = `${settings.UTTERANCES_API}repos/${owner}/${repo}/issues${
+  const url = `${settings.YTTRINGAR_API}repos/${owner}/${repo}/issues${
     label ? `?label=${encodeURIComponent(label)}` : ''
   }`
   const request = new Request(url, {

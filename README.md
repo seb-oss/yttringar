@@ -21,7 +21,7 @@ First make sure you create a file in **src** called config.ts. In src/config.ts 
 
 ```
 export const settings = {
-  UTTERANCES_API: the oauth api for producing github tokens.
+  YTTRINGAR_API: the oauth api for producing github tokens.
   GITHUB_API: github's REST-api, if running externally use https://api.github.com/
   GITHUB_REPO_URL: The url for the repo where the user should be linked to. TODO: take this value from front end instantiation
 }
