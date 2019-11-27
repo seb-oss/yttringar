@@ -13,7 +13,7 @@ COPY /src ./src
 
 COPY tslint.json ./
 COPY tsconfig.json ./
-COPY utterances.json ./
+COPY yttringar.json ./
 COPY .sassrc.js ./
 COPY .postcssrc.js ./
 COPY .posthtmlrc.js ./

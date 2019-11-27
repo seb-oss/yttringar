@@ -18,8 +18,8 @@
   },
   "scripts": {
     "start": "serve dist --port 4000 --clipless --cors",
-    "dev": "parcel serve src/*.html src/client.ts src/stylesheets/themes/*/{index,utterances}.scss --no-hmr --port 4000",
-    "build": "parcel build src/*.html src/client.ts src/stylesheets/themes/*/{index,utterances}.scss --experimental-scope-hoisting",
+    "dev": "parcel serve src/*.html src/client.ts src/stylesheets/themes/*/{index,yttringar}.scss --no-hmr --port 4000",
+    "build": "parcel build src/*.html src/client.ts src/stylesheets/themes/*/{index,yttringar}.scss --experimental-scope-hoisting",
     "lint": "tslint --project tsconfig.json"
   },
   "devDependencies": {
