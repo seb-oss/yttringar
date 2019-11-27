@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2018 Jeremy Danyow
+Copyright for portions of project yttringar are held by Jeremy Danyow, 2018, as part of project utterances.
+All other copyright for project yttringar are held by SEB 2019.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
