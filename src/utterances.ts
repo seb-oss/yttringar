@@ -155,8 +155,8 @@ export async function assertOrigin() {
   <div class="flash flash-error flash-not-installed">
     Error: <code>${origin}</code> is not permitted to post to <code>${owner}/${repo}</code>.
     Confirm this is the correct repo for this site's comments. If you own this repo,
-    <a href="https://github.com/${owner}/${repo}/edit/master/utterances.json" target="_top">
-      <strong>update the utterances.json</strong>
+    <a href="https://github.com/${owner}/${repo}/edit/master/yttringar.json" target="_top">
+      <strong>update the yttringar.json</strong>
     </a>
     to include <code>${origin}</code> in the list of origins.<br/><br/>
     Suggested configuration:<br/>
