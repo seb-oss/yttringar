@@ -17,7 +17,7 @@
     "url": "https://github.com/sebgroup/yttringar.git"
   },
   "scripts": {
-    "start": "serve dist --port 4000 --clipless --cors",
+    "start": "http-server dist --port 5000 --cors",
     "dev": "parcel serve src/*.html src/client.ts src/stylesheets/themes/*/{index,yttringar}.scss --no-hmr --port 4000",
     "build": "parcel build src/*.html src/client.ts src/stylesheets/themes/*/{index,yttringar}.scss --experimental-scope-hoisting",
     "lint": "tslint --project tsconfig.json"
@@ -37,6 +37,6 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "serve": "^6.5.8"
+    "http-server": "^0.12.0"
   }
 }
