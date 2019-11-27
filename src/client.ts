@@ -3,9 +3,9 @@ import { ResizeMessage } from './measure';
 
 // slice access token from query string
 const params = deparam(location.search.substr(1));
-const token = params.utterances;
+const token = params.yttringar;
 if (token) {
-  delete params.utterances;
+  delete params.yttringar;
   let search = param(params);
   if (search.length) {
     search = '?' + search;
@@ -17,7 +17,7 @@ let script = document.currentScript as HTMLScriptElement;
 if (script === undefined) {
   // Internet Explorer :(
   // tslint:disable-next-line:max-line-length
-  script = document.querySelector('script[src^="https://utteranc.es/client.js"],script[src^="http://localhost:4000/client.js"]') as HTMLScriptElement;
+  script = document.querySelector('script[src^="http://localhost:4000/client.js"]') as HTMLScriptElement; // TODO: add script[src^=] when hosted externally
 }
 
 // gather script element's attributes
@@ -39,17 +39,17 @@ const ogtitleMeta = document.querySelector(`meta[property='og:title'],meta[name=
 attrs['og:title'] = ogtitleMeta ? ogtitleMeta.content : '';
 attrs.token = token;
 
-// create the standard utterances styles and insert them at the beginning of the
+// create the standard yttringar styles and insert them at the beginning of the
 // <head> for easy overriding.
 // NOTE: the craziness with "width" is for mobile safari :(
 document.head.insertAdjacentHTML(
   'afterbegin',
   `<style>
-    .utterances {
+    .yttringar {
       position: relative;
       box-sizing: border-box;
     }
-    .utterances-frame {
+    .yttringar-frame {
       position: absolute;
       left: 0;
       right: 0;
@@ -62,19 +62,19 @@ document.head.insertAdjacentHTML(
   </style>`);
 
 // create the comments iframe and it's responsive container
-const utterancesOrigin = script.src.replace('/client.js', '')
-const url = `${utterancesOrigin}/utterances.html`;
+const yttringarOrigin = script.src.replace('/client.js', '')
+const url = `${yttringarOrigin}/yttringar.html`;
 script.insertAdjacentHTML(
   'afterend',
-  `<div class="utterances">
-    <iframe class="utterances-frame" id="utterances-frame" title="Comments" scrolling="no" src="${url}?${param(attrs)}"></iframe>
+  `<div class="yttringar">
+    <iframe class="yttringar-frame" id="yttringar-frame" title="Comments" scrolling="no" src="${url}?${param(attrs)}"></iframe>
   </div>`);
 const container = script.nextElementSibling as HTMLDivElement;
 script.parentElement!.removeChild(script);
 
 // adjust the iframe's height when the height of it's content changes
 addEventListener('message', event => {
-  if (event.origin !== utterancesOrigin) {
+  if (event.origin !== yttringarOrigin) {
     return;
   }
   const data = event.data as ResizeMessage;

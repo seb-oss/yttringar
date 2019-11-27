@@ -79,11 +79,9 @@ addEventListener('not-installed', function handleNotInstalled() {
     'afterbegin',
     `
   <div class="flash flash-error">
-    Error: utterances is not installed on <code>${page.owner}/${page.repo}</code>.
+    Error: yttringar is not installed on <code>${page.owner}/${page.repo}</code>.
     If you own this repo,
-    <a href="https://github.com/apps/utterances" target="_top"><strong>install the app</strong></a>.
-    Read more about this change in
-    <a href="https://github.com/utterance/utterances/pull/25" target="_top">the PR</a>.
+    <a href="https://github.com/apps/yttringar" target="_top"><strong>install the app</strong></a>.
   </div>`
   )
   scheduleMeasure()

@@ -1,21 +1,18 @@
-# utterances 🔮
+# yttringar
 
-A lightweight comments widget built on GitHub issues. Use GitHub issues for blog comments, wiki pages and more!
+This repo contains the code for the front end of the yttringar service. It is a widget built on Github issues to create trackable feedback for specific (documentation) pages. It is used internally at Skandinaviska Enskilda Banken (SEB), one of Sweden's major banks, to provide feedback for developer specific information. The concept is heavily inspired by the feedback system on [docs.microsoft.com](https://docs.microsoft.com), for [example](https://docs.microsoft.com/en-us/azure/devops/pipelines/apps/cd/deploy-docker-webapp?view=azure-devops&tabs=java#feedback).
 
-- [Open source](https://github.com/utterance). 🙌
-- No tracking, no ads, always free. 📡🚫
-- No lock-in. All data stored in GitHub issues. 🔓
-- Styled with [Primer](http://primer.style), the css toolkit that powers GitHub. 💅
-- Dark theme. 🌘
-- Lightweight. Vanilla TypeScript. No font downloads, JavaScript frameworks or polyfills for evergreen browsers. 🐦🌲
+It is a fork from https://github.com/utterance/utterances.
 
-## how it works
+## How it works
 
-When Utterances loads, the GitHub [issue search API](https://developer.github.com/v3/search/#search-issues) is used to find the issue associated with the page based on `url`, `pathname` or `title`. If we cannot find an issue that matches the page, no problem, [utterances-bot](https://github.com/utterances-bot) will automatically create an issue the first time someone comments.
+When Yttringar loads, the GitHub [issue search API](https://developer.github.com/v3/search/#search-issues) is used to find the issue associated with the page based on `url`, `pathname` or `title`.
 
-To comment, users must authorize the utterances app to post on their behalf using the GitHub [OAuth flow](https://developer.github.com/v3/oauth/#web-application-flow). Alternatively, users can comment on the GitHub issue directly.
+To create new issues, users must authorize the yttringar app to post on their behalf using the GitHub [OAuth flow](https://developer.github.com/v3/oauth/#web-application-flow).
 
-## Getting started
+## Develop locally
+
+### Config
 
 First make sure you create a file in **src** called config.ts. In src/config.ts insert the following strings:
 
@@ -29,13 +26,17 @@ export const settings = {
 
 <!-- TODO: create default config values -->
 
-## sites using utterances
+### Run locally
 
-- Haxe [documentation](https://haxe.org/manual) and [cookbook](https://code.haxe.org/)
-- [danyow.net](https://danyow.net)
-- [os.phil-opp.com](https://os.phil-opp.com/second-edition)
-- **[and many more...](https://github.com/utterance/utterances/blob/master/SITES.md#sites-using-utterances)**
+```
+npm run dev
+```
 
-Are you using utterances? [Add your site](https://github.com/utterance/utterances/edit/master/SITES.md) to the list!
+### Build for production
 
-# try it out 👇👇👇
+```
+npm run build
+npm run start
+```
+
+or just use the Dockerfile present
