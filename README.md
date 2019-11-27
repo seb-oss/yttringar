@@ -40,3 +40,8 @@ npm run start
 ```
 
 or just use the Dockerfile present
+
+## Disclaimer
+
+This is a work in progress and lots of the functionality from utterances has been omitted for the time being
+Contributions are welcome!
